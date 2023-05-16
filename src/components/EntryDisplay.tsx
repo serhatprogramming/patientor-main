@@ -1,5 +1,7 @@
 import { Diagnosis, Entry } from "../types";
 import HealthHeart from "./HealthHeart";
+import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
+import WorkIcon from "@mui/icons-material/Work";
 
 interface EntryProps {
   entries: Entry;
@@ -18,7 +20,16 @@ const EntryDisplay = (props: EntryProps) => {
   return (
     <div style={entryStyle} key={props.entries.id}>
       <p>
-        {props.entries.date} <br /> {props.entries.description}
+        {props.entries.date}{" "}
+        {props.entries.type &&
+        props.entries.type === "OccupationalHealthcare" ? (
+          <>
+            <WorkIcon /> {props.entries.employerName}{" "}
+          </>
+        ) : (
+          <MedicalServicesIcon />
+        )}{" "}
+        <br /> {props.entries.description}
       </p>
       <ul>
         {props.entries.diagnosisCodes?.map((dc) => (
