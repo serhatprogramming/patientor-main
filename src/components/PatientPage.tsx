@@ -5,6 +5,8 @@ import { Patient, Diagnosis } from "../types";
 
 import { useParams } from "react-router-dom";
 
+import EntryDisplay from "./EntryDisplay";
+
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 
@@ -40,22 +42,11 @@ const PatientPage = () => {
             <>
               <h3>entries</h3>
               {patient.entries.map((entry) => (
-                <div key={entry.id}>
-                  <p>
-                    {entry.date} {entry.description}
-                  </p>
-                  <ul>
-                    {entry.diagnosisCodes?.map((dc) => (
-                      <li key={dc}>
-                        {dc}{" "}
-                        {
-                          diagnoses.find((diagnose) => diagnose.code === dc)
-                            ?.name
-                        }
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <EntryDisplay
+                  key={entry.id}
+                  entries={entry}
+                  diagnoses={diagnoses}
+                />
               ))}
             </>
           ) : (
