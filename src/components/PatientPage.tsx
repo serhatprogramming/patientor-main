@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import patients from "../services/patients";
-import diagnoses from "../services/diagnoses";
-import { Patient } from "../types";
+import { getAllDiagnoses } from "../services/diagnoses";
+import { Patient, Diagnosis } from "../types";
 
 import { useParams } from "react-router-dom";
 
 const PatientPage = () => {
   const [patient, setPatient] = useState<Patient>();
+  const [diagnoses, setDiagnoses] = useState<Diagnosis[]>();
   const id = useParams().id;
 
   useEffect(() => {
@@ -15,12 +16,12 @@ const PatientPage = () => {
       .then((data) => setPatient(data))
       .catch((e) => console.log(e));
 
-    diagnoses.getAllDiagnoses().then((data) => console.log("iste: ", data));
+    getAllDiagnoses().then((data) => setDiagnoses(data));
   }, [id]);
 
   return (
     <div>
-      {patient && (
+      {patient && diagnoses && (
         <>
           <h2>{patient.name}</h2>
           <p>
@@ -33,7 +34,7 @@ const PatientPage = () => {
             <>
               <h3>entries</h3>
               {patient.entries.map((entry) => (
-                <>
+                <div key={patient.id}>
                   <p>
                     {patient.entries[0].date} {patient.entries[0].description}
                   </p>
@@ -42,14 +43,14 @@ const PatientPage = () => {
                       <li key={dc}>{dc}</li>
                     ))}
                   </ul>
-                </>
+                </div>
               ))}
             </>
           ) : (
             <h3>No entries yet</h3>
           )}
 
-          {console.log(patient.entries)}
+          {console.log(diagnoses)}
         </>
       )}
     </div>

@@ -7,4 +7,4 @@ const getAllDiagnoses = async () => {
   return data;
 };
 
-export default { getAllDiagnoses };
+export { getAllDiagnoses };
