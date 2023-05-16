@@ -5,6 +5,9 @@ import { Patient, Diagnosis } from "../types";
 
 import { useParams } from "react-router-dom";
 
+import FemaleIcon from "@mui/icons-material/Female";
+import MaleIcon from "@mui/icons-material/Male";
+
 const PatientPage = () => {
   const [patient, setPatient] = useState<Patient>();
   const [diagnoses, setDiagnoses] = useState<Diagnosis[]>();
@@ -23,9 +26,12 @@ const PatientPage = () => {
     <div>
       {patient && diagnoses && (
         <>
-          <h2>{patient.name}</h2>
+          <h2>
+            {patient.name}{" "}
+            {patient.gender === "female" ? <FemaleIcon /> : <MaleIcon />}
+          </h2>
           <p>
-            {patient.gender} <br />
+            <br />
             ssn: {patient.ssn} <br />
             occupation: {patient.occupation}
           </p>
