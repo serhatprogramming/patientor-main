@@ -34,12 +34,12 @@ const PatientPage = () => {
             <>
               <h3>entries</h3>
               {patient.entries.map((entry) => (
-                <div key={patient.id}>
+                <div key={entry.id}>
                   <p>
-                    {patient.entries[0].date} {patient.entries[0].description}
+                    {entry.date} {entry.description}
                   </p>
                   <ul>
-                    {patient.entries[0].diagnosisCodes?.map((dc) => (
+                    {entry.diagnosisCodes?.map((dc) => (
                       <li key={dc}>
                         {dc}{" "}
                         {
@@ -55,8 +55,6 @@ const PatientPage = () => {
           ) : (
             <h3>No entries yet</h3>
           )}
-
-          {console.log(diagnoses)}
         </>
       )}
     </div>
