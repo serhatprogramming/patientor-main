@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import patients from "../services/patients";
+import diagnoses from "../services/diagnoses";
 import { Patient } from "../types";
 
 import { useParams } from "react-router-dom";
@@ -13,6 +14,8 @@ const PatientPage = () => {
       .getPatientInfo(id)
       .then((data) => setPatient(data))
       .catch((e) => console.log(e));
+
+    diagnoses.getAllDiagnoses().then((data) => console.log("iste: ", data));
   }, [id]);
 
   return (
