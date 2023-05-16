@@ -40,7 +40,13 @@ const PatientPage = () => {
                   </p>
                   <ul>
                     {patient.entries[0].diagnosisCodes?.map((dc) => (
-                      <li key={dc}>{dc}</li>
+                      <li key={dc}>
+                        {dc}{" "}
+                        {
+                          diagnoses.find((diagnose) => diagnose.code === dc)
+                            ?.name
+                        }
+                      </li>
                     ))}
                   </ul>
                 </div>
