@@ -66,8 +66,8 @@ const EntryForm = (props: EntryProps) => {
         props
           .addNewEntry({
             ...midEntry,
-            type: "HealthCheck",
-            healthCheckRating: Number(healthCheckRating),
+            type: "Hospital",
+            discharge: { date: dischargeDate, criteria: dischargeCriteria },
           })
           .then((data) => console.log("returned Data"))
           .catch((e) => {
@@ -81,8 +81,9 @@ const EntryForm = (props: EntryProps) => {
         props
           .addNewEntry({
             ...midEntry,
-            type: "HealthCheck",
-            healthCheckRating: Number(healthCheckRating),
+            type: "OccupationalHealthcare",
+            employerName,
+            sickLeave: { startDate: sickStart, endDate: sickEnd },
           })
           .then((data) => console.log("returned Data"))
           .catch((e) => {
@@ -148,7 +149,7 @@ const EntryForm = (props: EntryProps) => {
           <input
             type="radio"
             name="filterVisibility"
-            onChange={() => setEntryType("OccupationalHealthcare")}
+            onChange={() => setEntryType("OccupationalHealthCare")}
           />
           Hospital{" "}
           <input
@@ -178,7 +179,7 @@ const EntryForm = (props: EntryProps) => {
           </div>
         )}
         <br />
-        {entryType === "OccupationalHealthcare" && (
+        {entryType === "OccupationalHealthCare" && (
           <>
             <div>
               <strong>employer name:</strong>{" "}
@@ -206,7 +207,9 @@ const EntryForm = (props: EntryProps) => {
         )}
         {entryType === "Hospital" && (
           <>
-            <h4>Enter Discharge Information</h4>
+            <div>
+              <strong>Enter Discharge Information</strong>
+            </div>
             <div>
               Discharge Date:{" "}
               <input
