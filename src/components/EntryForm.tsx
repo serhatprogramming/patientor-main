@@ -18,6 +18,13 @@ const EntryForm = (props: EntryProps) => {
   const [diagnosis, setDiagnosis] = useState<Array<Diagnosis["code"]>>([]);
   const [notification, setNotification] = useState("");
   const [entryType, setEntryType] = useState("HealthCheck");
+  const [employerName, setEmployerName] = useState("");
+
+  const [sickStart, setSickStart] = useState("");
+  const [sickEnd, setSickEnd] = useState("");
+
+  const [dischargeDate, setDischargeDate] = useState("");
+  const [dischargeCriteria, setDischargeCriteria] = useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
     setHealthCheckRating(Number(event.target.value as string));
@@ -169,6 +176,54 @@ const EntryForm = (props: EntryProps) => {
               </Select>
             </FormControl>
           </div>
+        )}
+        <br />
+        {entryType === "OccupationalHealthcare" && (
+          <>
+            <div>
+              <strong>employer name:</strong>{" "}
+              <input
+                type="text"
+                value={employerName}
+                onChange={(e) => setEmployerName(e.target.value)}
+              />
+            </div>
+            <div>
+              <strong>Sick Leave:</strong> <br /> Start Date:{" "}
+              <input
+                type="date"
+                value={sickStart}
+                onChange={(e) => setSickStart(e.target.value)}
+              />{" "}
+              <br /> End Date:{" "}
+              <input
+                type="date"
+                value={sickEnd}
+                onChange={(e) => setSickEnd(e.target.value)}
+              />
+            </div>
+          </>
+        )}
+        {entryType === "Hospital" && (
+          <>
+            <h4>Enter Discharge Information</h4>
+            <div>
+              Discharge Date:{" "}
+              <input
+                type="date"
+                value={dischargeDate}
+                onChange={(e) => setDischargeDate(e.target.value)}
+              />{" "}
+            </div>
+            <div>
+              Discharge Criteria:{" "}
+              <input
+                type="text"
+                value={dischargeCriteria}
+                onChange={(e) => setDischargeCriteria(e.target.value)}
+              />
+            </div>
+          </>
         )}
         <br />
         <input
