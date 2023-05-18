@@ -36,6 +36,7 @@ const EntryForm = (props: EntryProps) => {
             specialist,
             date,
             type: "HealthCheck",
+            diagnosisCodes: diagnosis.length > 0 ? diagnosis : [],
             healthCheckRating: Number(healthCheckRating),
           });
           setDate("");

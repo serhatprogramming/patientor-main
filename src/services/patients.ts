@@ -25,6 +25,7 @@ const addEntry = async (id: string | undefined, object: EntryWithoutId) => {
     `${apiBaseUrl}/patients/${id}/entries`,
     object
   );
+  console.log("coming object: ", object);
   return data;
 };
 
