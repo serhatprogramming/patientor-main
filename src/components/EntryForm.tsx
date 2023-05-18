@@ -22,41 +22,42 @@ const EntryForm = (props: EntryProps) => {
     setHealthCheckRating(Number(event.target.value as string));
   };
 
+  const resetFields = () => {
+    setDate("");
+    setDescription("");
+    setSpecialist("");
+    setHealthCheckRating(HealthCheckRating.Healthy);
+    setDiagnosis([]);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    props
+      .addNewEntry({
+        description,
+        specialist,
+        date,
+        type: "HealthCheck",
+        diagnosisCodes: diagnosis.length > 0 ? diagnosis : [],
+        healthCheckRating: Number(healthCheckRating),
+      })
+      .then((data) => console.log("returned Data"))
+      .catch((e) => {
+        console.log("error: ", setNotification(e.response.data));
+        setTimeout(() => {
+          setNotification("");
+        }, 3000);
+      });
+    resetFields();
+  };
+
   return (
     <div>
       <h3>New Entry</h3>
       {notification.length > 0 && (
         <p style={{ color: "red" }}>{notification}</p>
       )}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          console.log("Hello", description, date, specialist);
-          console.log("Health Rating: ", Number(healthCheckRating));
-          console.log("Diagnose List: ", diagnosis);
-          props
-            .addNewEntry({
-              description,
-              specialist,
-              date,
-              type: "HealthCheck",
-              diagnosisCodes: diagnosis.length > 0 ? diagnosis : [],
-              healthCheckRating: Number(healthCheckRating),
-            })
-            .then((data) => console.log("returned Data"))
-            .catch((e) => {
-              console.log("error: ", setNotification(e.response.data));
-              setTimeout(() => {
-                setNotification("");
-              }, 3000);
-            });
-          setDate("");
-          setDescription("");
-          setSpecialist("");
-          setHealthCheckRating(HealthCheckRating.Healthy);
-          setDiagnosis([]);
-        }}
-      >
+      <form onSubmit={(e) => handleSubmit(e)}>
         <div>
           description:{" "}
           <input
@@ -106,17 +107,7 @@ const EntryForm = (props: EntryProps) => {
           <br />
           <MultipleSelect setDiagnosis={setDiagnosis} diagnosis={diagnosis} />
         </div>
-        <input
-          type="button"
-          value="cancel"
-          onClick={() => {
-            setDate("");
-            setDescription("");
-            setDiagnosis([]);
-            setHealthCheckRating(HealthCheckRating.Healthy);
-            setSpecialist("");
-          }}
-        />{" "}
+        <input type="button" value="cancel" onClick={() => resetFields()} />{" "}
         <button type="submit">Add Entry</button>
       </form>
     </div>
