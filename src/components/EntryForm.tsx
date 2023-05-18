@@ -3,17 +3,23 @@ import { FormControl, Select, MenuItem, InputLabel } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material";
 // import { HealthCheckRating } from "../types";
 import MultipleSelect from "./MultipleDiagnoseSelect";
-import { Diagnosis } from "../types";
+import { Diagnosis, Entry, EntryWithoutId, HealthCheckRating } from "../types";
 
-const EntryForm = () => {
+interface EntryProps {
+  addNewEntry: (object: EntryWithoutId) => Promise<Entry>;
+}
+
+const EntryForm = (props: EntryProps) => {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [specialist, setSpecialist] = useState("");
-  const [healthCheckRating, setHealthCheckRating] = useState("0");
+  const [healthCheckRating, setHealthCheckRating] = useState<HealthCheckRating>(
+    HealthCheckRating.Healthy
+  );
   const [diagnosis, setDiagnosis] = useState<Array<Diagnosis["code"]>>([]);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setHealthCheckRating(event.target.value as string);
+    setHealthCheckRating(Number(event.target.value as string));
   };
 
   return (
@@ -25,10 +31,17 @@ const EntryForm = () => {
           console.log("Hello", description, date, specialist);
           console.log("Health Rating: ", Number(healthCheckRating));
           console.log("Diagnose List: ", diagnosis);
+          props.addNewEntry({
+            description,
+            specialist,
+            date,
+            type: "HealthCheck",
+            healthCheckRating: Number(healthCheckRating),
+          });
           setDate("");
           setDescription("");
           setSpecialist("");
-          setHealthCheckRating("");
+          setHealthCheckRating(HealthCheckRating.Healthy);
           setDiagnosis([]);
         }}
       >
@@ -65,7 +78,7 @@ const EntryForm = () => {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={healthCheckRating}
+              value={healthCheckRating as unknown as string}
               label="Rating"
               onChange={handleChange}
             >

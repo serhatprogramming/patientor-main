@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import patients from "../services/patients";
 import { getAllDiagnoses } from "../services/diagnoses";
-import { Patient, Diagnosis } from "../types";
+import { Patient, Diagnosis, EntryWithoutId, Entry } from "../types";
 
 import { useParams } from "react-router-dom";
 
@@ -25,6 +25,11 @@ const PatientPage = () => {
     getAllDiagnoses().then((data) => setDiagnoses(data));
   }, [id]);
 
+  const addNewEntry = async (object: EntryWithoutId) => {
+    const addedEntry: Entry = await patients.addEntry(id, object);
+    return addedEntry;
+  };
+
   return (
     <div>
       {patient && diagnoses && (
@@ -38,7 +43,7 @@ const PatientPage = () => {
             ssn: {patient.ssn} <br />
             occupation: {patient.occupation}
           </p>
-          <EntryForm />
+          <EntryForm addNewEntry={addNewEntry} />
 
           {patient.entries.length > 0 ? (
             <>
