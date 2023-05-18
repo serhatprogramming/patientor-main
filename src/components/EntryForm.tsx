@@ -17,6 +17,7 @@ const EntryForm = (props: EntryProps) => {
   );
   const [diagnosis, setDiagnosis] = useState<Array<Diagnosis["code"]>>([]);
   const [notification, setNotification] = useState("");
+  const [entryType, setEntryType] = useState("HealthCheck");
 
   const handleChange = (event: SelectChangeEvent) => {
     setHealthCheckRating(Number(event.target.value as string));
@@ -32,22 +33,60 @@ const EntryForm = (props: EntryProps) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props
-      .addNewEntry({
-        description,
-        specialist,
-        date,
-        type: "HealthCheck",
-        diagnosisCodes: diagnosis.length > 0 ? diagnosis : [],
-        healthCheckRating: Number(healthCheckRating),
-      })
-      .then((data) => console.log("returned Data"))
-      .catch((e) => {
-        console.log("error: ", setNotification(e.response.data));
-        setTimeout(() => {
-          setNotification("");
-        }, 3000);
-      });
+    const midEntry = {
+      description,
+      specialist,
+      date,
+      diagnosisCodes: diagnosis.length > 0 ? diagnosis : [],
+    };
+    switch (entryType) {
+      case "HealthCheck":
+        props
+          .addNewEntry({
+            ...midEntry,
+            type: "HealthCheck",
+            healthCheckRating: Number(healthCheckRating),
+          })
+          .then((data) => console.log("returned Data"))
+          .catch((e) => {
+            console.log("error: ", setNotification(e.response.data));
+            setTimeout(() => {
+              setNotification("");
+            }, 3000);
+          });
+        break;
+      case "Hospital":
+        props
+          .addNewEntry({
+            ...midEntry,
+            type: "HealthCheck",
+            healthCheckRating: Number(healthCheckRating),
+          })
+          .then((data) => console.log("returned Data"))
+          .catch((e) => {
+            console.log("error: ", setNotification(e.response.data));
+            setTimeout(() => {
+              setNotification("");
+            }, 3000);
+          });
+        break;
+      case "OccupationalHealthCare":
+        props
+          .addNewEntry({
+            ...midEntry,
+            type: "HealthCheck",
+            healthCheckRating: Number(healthCheckRating),
+          })
+          .then((data) => console.log("returned Data"))
+          .catch((e) => {
+            console.log("error: ", setNotification(e.response.data));
+            setTimeout(() => {
+              setNotification("");
+            }, 3000);
+          });
+        break;
+    }
+
     resetFields();
   };
 
@@ -57,6 +96,7 @@ const EntryForm = (props: EntryProps) => {
       {notification.length > 0 && (
         <p style={{ color: "red" }}>{notification}</p>
       )}
+
       <form onSubmit={(e) => handleSubmit(e)}>
         <div>
           description:{" "}
@@ -83,31 +123,59 @@ const EntryForm = (props: EntryProps) => {
           />
         </div>
         <div>
-          Health Check Rating
-          <br />
-          <br />
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Rating</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={healthCheckRating as unknown as string}
-              label="Rating"
-              onChange={handleChange}
-            >
-              <MenuItem value={0}>Healthy</MenuItem>
-              <MenuItem value={1}>Low Risk</MenuItem>
-              <MenuItem value={2}>High Risk</MenuItem>
-              <MenuItem value={3}>Critical Risk</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-        <div>
           Diagnoses
           <br />
           <MultipleSelect setDiagnosis={setDiagnosis} diagnosis={diagnosis} />
         </div>
-        <input type="button" value="cancel" onClick={() => resetFields()} />{" "}
+        <div>
+          <p>
+            <strong>Select Entry Type:</strong>
+          </p>
+          Health Check
+          <input
+            type="radio"
+            name="filterVisibility"
+            onChange={() => setEntryType("HealthCheck")}
+          />
+          Occupational Health Care{" "}
+          <input
+            type="radio"
+            name="filterVisibility"
+            onChange={() => setEntryType("OccupationalHealthcare")}
+          />
+          Hospital{" "}
+          <input
+            type="radio"
+            name="filterVisibility"
+            onChange={() => setEntryType("Hospital")}
+          />
+        </div>
+        {entryType === "HealthCheck" && (
+          <div>
+            <br />
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Rating</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={healthCheckRating as unknown as string}
+                label="Rating"
+                onChange={handleChange}
+              >
+                <MenuItem value={0}>Healthy</MenuItem>
+                <MenuItem value={1}>Low Risk</MenuItem>
+                <MenuItem value={2}>High Risk</MenuItem>
+                <MenuItem value={3}>Critical Risk</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+        )}
+        <br />
+        <input
+          type="button"
+          value="cancel"
+          onClick={() => resetFields()}
+        />{" "}
         <button type="submit">Add Entry</button>
       </form>
     </div>
