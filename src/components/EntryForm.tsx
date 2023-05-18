@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { FormControl, Select, MenuItem, InputLabel } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material";
-// import { HealthCheckRating } from "../types";
 import MultipleSelect from "./MultipleDiagnoseSelect";
 import { Diagnosis, Entry, EntryWithoutId, HealthCheckRating } from "../types";
 
