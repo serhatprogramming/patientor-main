@@ -106,6 +106,17 @@ const EntryForm = (props: EntryProps) => {
           <br />
           <MultipleSelect setDiagnosis={setDiagnosis} diagnosis={diagnosis} />
         </div>
+        <input
+          type="button"
+          value="cancel"
+          onClick={() => {
+            setDate("");
+            setDescription("");
+            setDiagnosis([]);
+            setHealthCheckRating(HealthCheckRating.Healthy);
+            setSpecialist("");
+          }}
+        />{" "}
         <button type="submit">Add Entry</button>
       </form>
     </div>
