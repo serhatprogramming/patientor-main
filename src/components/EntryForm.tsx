@@ -16,6 +16,7 @@ const EntryForm = (props: EntryProps) => {
     HealthCheckRating.Healthy
   );
   const [diagnosis, setDiagnosis] = useState<Array<Diagnosis["code"]>>([]);
+  const [notification, setNotification] = useState("");
 
   const handleChange = (event: SelectChangeEvent) => {
     setHealthCheckRating(Number(event.target.value as string));
@@ -24,20 +25,31 @@ const EntryForm = (props: EntryProps) => {
   return (
     <div>
       <h3>New Entry</h3>
+      {notification.length > 0 && (
+        <p style={{ color: "red" }}>{notification}</p>
+      )}
       <form
         onSubmit={(e) => {
           e.preventDefault();
           console.log("Hello", description, date, specialist);
           console.log("Health Rating: ", Number(healthCheckRating));
           console.log("Diagnose List: ", diagnosis);
-          props.addNewEntry({
-            description,
-            specialist,
-            date,
-            type: "HealthCheck",
-            diagnosisCodes: diagnosis.length > 0 ? diagnosis : [],
-            healthCheckRating: Number(healthCheckRating),
-          });
+          props
+            .addNewEntry({
+              description,
+              specialist,
+              date,
+              type: "HealthCheck",
+              diagnosisCodes: diagnosis.length > 0 ? diagnosis : [],
+              healthCheckRating: Number(healthCheckRating),
+            })
+            .then((data) => console.log("returned Data"))
+            .catch((e) => {
+              console.log("error: ", setNotification(e.response.data));
+              setTimeout(() => {
+                setNotification("");
+              }, 3000);
+            });
           setDate("");
           setDescription("");
           setSpecialist("");
