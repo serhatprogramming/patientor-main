@@ -6,6 +6,7 @@ import { Patient, Diagnosis } from "../types";
 import { useParams } from "react-router-dom";
 
 import EntryDisplay from "./EntryDisplay";
+import EntryForm from "./EntryForm";
 
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
@@ -37,6 +38,7 @@ const PatientPage = () => {
             ssn: {patient.ssn} <br />
             occupation: {patient.occupation}
           </p>
+          <EntryForm />
 
           {patient.entries.length > 0 ? (
             <>
